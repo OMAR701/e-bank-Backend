@@ -1,3 +1,74 @@
 type Query {
-    hello: String
+    getClient(id: ID!): Client
+    getAllClients: [Client]
+    getAccount(id: ID!): Account
+    getAllAccounts: [Account]
+    _dummy: String
+}
+
+type Mutation {
+    createClient(input: ClientInput): Client
+    createAccount(input: AccountInput): Account
+    login(username: String!, password: String!): AuthData!
+}
+
+type Client {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    identityNumber: String!
+    birthDate: String!
+    email: String!
+    postalAddress: String!
+    accounts: [Account]
+}
+
+type Account {
+    id: ID!
+    rib: String!
+    client: Client!
+    balance: Float!
+    status: AccountStatus!
+    transactions: [Transaction]
+}
+
+type Transaction {
+    id: ID!
+    account: Account!
+    amount: Float!
+    date: String!
+    type: TransactionType!
+    description: String
+}
+
+type AuthData {
+    jwt: String!
+}
+
+enum AccountStatus {
+    OPEN
+    CLOSED
+    BLOCKED
+}
+
+enum TransactionType {
+    DEBIT
+    CREDIT
+}
+
+input ClientInput {
+    firstName: String!
+    lastName: String!
+    identityNumber: String!
+    birthDate: String!
+    email: String!
+    postalAddress: String!
+    userId: ID!
+}
+
+input AccountInput {
+    rib: String!
+    clientId: ID!
+    balance: Float!
+    status: AccountStatus!
 }
